@@ -518,6 +518,7 @@ details.more[open]>summary{margin-bottom:6px}
 @media (max-width:820px){.txt2{grid-template-columns:1fr}}
 .blk>h2{margin-bottom:0}
 .slide.win{height:clamp(360px,calc(100vh - 330px),620px)!important}
+#s-plan .pol-h{display:none!important}#s-plan.win{height:auto!important}#s-plan .pol{position:relative!important;inset:auto!important;padding:10px 40px 10px!important;grid-template-rows:auto auto!important}#s-plan .pc{overflow:visible}#s-plan .po{flex:none!important;height:clamp(60px,calc(100vh - 700px),200px)!important;min-height:0!important}
 #s-prob.win{height:clamp(260px,calc(100vh - 480px),560px)!important}
 #s-results.win{height:clamp(320px,calc(100vh - 430px),520px)!important}
 .cmp-s button{width:96px}
@@ -944,14 +945,14 @@ function SidePlayer(pfx,id,steps){
     else if(x.orb){A.style.opacity=B.style.opacity='0';orb.hidden=false;fitOrb()}
     else if(x.cycle)show(x.cycle[last?x.cycle.length-1:0]);else show(x.img);lab.textContent=x.lab}
   function fx(x){if(cur&&cur.leave)cur.leave(sec);cur=x;if(x.enter)x.enter(sec,ses.gen)}
-  function facts(x){if(x.F)for(var q in x.F){var e=$(pfx+'-f-'+q);e.textContent=x.F[q];e.classList.add('flash');(function(e){setTimeout(function(){e.classList.remove('flash')},900)})(e)}}
+  function facts(x){if(x.F)for(var q in x.F){var e=$(pfx+'-f-'+({ph:'photos',cam:'cameras',drw:'drawings',comp:'components',obj:'objects',mask:'masks',asset:'assets',phys:'physics'}[q]||q));if(!e)continue;e.textContent=x.F[q];e.classList.add('flash');(function(e){setTimeout(function(){e.classList.remove('flash')},900)})(e)}}
   async function step(k){var x=steps[k],t0=performance.now();tile(k);skl(sk,x.skill||x.tool);kl.textContent=x.skill?'skill':'tool';ses.status(x.st,'on');ses.call(null);bg.classList.add('busy');
     media(x,false);fx(x);
     if(x.cycle){(async function(){for(var c=1;c<x.cycle.length;c++){await ses.sleep(x.dur/x.cycle.length);show(x.cycle[c])}})().catch(function(){})}
     for(var i=0;i<x.L.length;i++){var l=x.L[i];if(l[0]==='hd')await ses.line('hd',l[1],false);else if(l[0]==='edit')await ses.progress(l[1],900);else{await ses.line(l[0],l[1],true);await ses.sleep(220)}}
     bg.classList.remove('busy');facts(x);if(x.call)ses.call(x.call);
     var left=(x.dur||3000)-(performance.now()-t0);if(left>0)await ses.sleep(left);ses.status('done','ok')}
-  function reset(){mv(null);ses.con.innerHTML='';ses.el=0;ses.call(null);[].forEach.call(sec.querySelectorAll('.facts b'),function(b){b.textContent='–'})}
+  function reset(){ses.con.innerHTML='';ses.el=0;ses.call(null);[].forEach.call(sec.querySelectorAll('.facts b'),function(b){b.textContent='–'})}
   async function play(from){ses.gen++;var g=ses.gen;ses.playing=true;ses.paused=false;ses.btn();if(from===0){reset();await ses.line('dim',steps.head,false)}
     ses.clock();try{for(var k=from;k<steps.length;k++)await step(k)}catch(e){return}if(g===ses.gen){ses.playing=false;ses.btn(true)}}
   function jump(k){var was=ses.playing&&!ses.paused;ses.gen++;ses.playing=false;ses.paused=false;bg.classList.remove('busy');ses.con.innerHTML='';ses.line('dim',steps.head,false);
